@@ -10,4 +10,11 @@ Utilities/
 
 *.geojson
 
+*.mbtiles
+
 .DS_Store
+
+# Ignore VectorTilesPipeline build and deployment files
+VectorTilesPipeline/build_tiles/
+VectorTilesPipeline/tileserver/
+VectorTilesPipeline/docker-compose.yml
