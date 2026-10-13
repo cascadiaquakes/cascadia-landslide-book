@@ -1,171 +1,136 @@
 # Cascadia Ground Failure Data Repository
 
-[![Build Jupyter Book](https://github.com/cascadiaquakes/cascadia-landslide-book/actions/workflows/deploy-book.yml/badge.svg)](https://github.com/cascadiaquakes/cascadia-landslide-book/actions/workflows/deploy-book.yml)
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 
-📘 **Documentation (Jupyter Book):** https://cascadiaquakes.github.io/cascadia-landslide-book  
-🌐 **Interactive Viewer:** https://ground-failure.cascadiaquakes.org/
+Collection, harmonization and preparation of landslide and ground-failure inventories for the Cascadia region (California, Oregon, Washington and British Columbia). This repository underpins the CRESCENT Ground Failure Repository and viewer with reproducible data-processing workflows, and its Jupyter Book is the main reference for contributors.
 
----
+**Read the book:** https://cascadiaquakes.github.io/cascadia-landslide-book/
 
-This repository supports the **collection, harmonization, and preparation of landslide and ground-failure inventories** for the Cascadia region (California, Oregon, Washington, and British Columbia). It underpins the **CRESCENT Ground Failure Repository** and associated web viewers by providing transparent, reproducible data-processing workflows.
-
-The repository contains:
-- Jupyter notebooks documenting **data acquisition, preprocessing, harmonization, and enrichment**
-- Standardized outputs (GeoJSON / CSV) suitable for visualization, analysis, and downstream applications
-- A **Jupyter Book** that documents the full processing pipeline and serves as the primary reference for contributors
+**Viewer:** https://ground-failure.cascadiaquakes.org
 
 ---
 
-## Documentation
+## Contents
 
-The full, curated documentation, including step-by-step preprocessing examples and submission instructions is available via the **Jupyter Book**:
-
-👉 https://cascadiaquakes.github.io/cascadia-landslide-book
-
-If you are new to the project or planning to contribute data, **start with the book**.
+- **Processing**: notebooks for data acquisition, preprocessing, harmonization and enrichment (`processing_notebooks/`)
+- **Submission Instructions**: how to contribute an inventory (`submission_instructions.md`)
+- Standardized GeoJSON / CSV outputs for visualization and analysis
 
 ---
 
-## Data Acquisition
+## Data
 
-Before running any preprocessing notebooks, download the required datasets from their official sources and place them in a local `DATA/` directory (not tracked by git).
+Download the source datasets and place them in a local `DATA/` directory (not tracked by git) before running the notebooks.
 
-### Landslide Inventories
+**Landslide inventories**
 
-- **Oregon**  
-  Statewide Landslide Information Database for Oregon (SLIDO)  
-  https://www.oregon.gov/dogami/slido/Pages/data.aspx
+- **Oregon**: Statewide Landslide Information Database for Oregon (SLIDO), https://www.oregon.gov/dogami/slido/Pages/data.aspx
+- **Washington**: Washington Geological Survey, Landslide Hazard Program, https://dnr.wa.gov/washington-geological-survey/geologic-hazards-and-environment/landslides
+- **California**: California Geological Survey, Landslide Inventory and Deep-Seated Landslide Susceptibility Map, https://maps.conservation.ca.gov/cgs/lsi/
+- **British Columbia (regional example)**: Landslide inventory map of the Valemount area, https://ostrnrcan-dostrncan.canada.ca/entities/publication/405661b8-7bd8-49d0-8f03-f9bac9aa7c52
+- **Canada (national)**: Preliminary Canadian Landslide Database, https://doi.org/10.5281/zenodo.7089351
 
-- **Washington**  
-  Washington Geological Survey – Landslide Hazard Program  
-  https://dnr.wa.gov/washington-geological-survey/geologic-hazards-and-environment/landslides
+**Ancillary hazard data**
 
-- **California**  
-  California Geological Survey – Landslide Inventory and Deep-Seated Landslide Susceptibility Map  
-  https://maps.conservation.ca.gov/cgs/lsi/
+- **Seismic shaking**: the ShakeMap XML grid file (`grid.xml`) for the USGS M9.0 Cascadia scenario, https://earthquake.usgs.gov/scenarios/eventpage/cszm9ensemble_se/shakemap/intensity
+- **Rainfall**: 30-year (1990-2019) annual average DAYMET precipitation for North America, https://doi.org/10.5066/P9E0JZ82
 
-- **British Columbia (regional example)**  
-  Landslide inventory map of the Valemount area  
-  https://ostrnrcan-dostrncan.canada.ca/entities/publication/405661b8-7bd8-49d0-8f03-f9bac9aa7c52
-
-- **Canada (national)**  
-  Preliminary Canadian Landslide Database  
-  https://doi.org/10.5281/zenodo.7089351
-
----
-
-## Ancillary Hazard Datasets
-
-### Seismic Shaking (USGS ShakeMap)
-
-For earthquake-triggered ground-failure metrics (PGA, PSA, MMI, etc.), download the **ShakeMap XML Grid File** from:
-
-- USGS M9.0 Cascadia Scenario Earthquake  
-  https://earthquake.usgs.gov/scenarios/eventpage/cszm9ensemble_se/shakemap/intensity
-
-Place the downloaded `grid.xml` file in the `DATA/` directory.
-
-### Rainfall Data
-
-Long-term precipitation metrics are derived from:
-
-- **30-Year (1990–2019) Annual Average DAYMET Precipitation for North America**  
-  https://doi.org/10.5066/P9E0JZ82
-
-These data are used during post-processing to associate landslides with climatological rainfall statistics.
-
----
-
-## Repository Structure
-
-```
-.
-├── processing_notebooks/
-│   ├── ExploratoryDataAnalysis/     # Initial exploration (not part of the book)
-│   ├── PreProcessing/               # Source-specific ingestion & cleaning
-│   ├── PostProcessing/              # Harmonization, IDs, hazard attribution
-│   └── postGIS/                     # Optional database workflows
-│
-├── datasets_description/            # Supporting metadata and notes
-├── static_tiling/                   # Vector tile generation pipelines
-│
-├── intro.md                         # Jupyter Book landing page
-├── processing.md                    # Processing overview (book)
-├── submission_instructions.md       # Contribution guide (book)
-├── _toc.yml                         # Jupyter Book table of contents
-├── _config.yml                      # Jupyter Book configuration
-└── README.md
-```
+All original datasets remain the intellectual property of their respective agencies and authors.
 
 ---
 
 ## Processing Workflow
 
-1. **Exploratory Data Analysis**  
-   Initial inspection of raw inventories (formats, attributes, spatial coverage).
-
-2. **PreProcessing**  
-   - Ingest raw datasets  
-   - Normalize geometries and coordinate reference systems  
-   - Map source attributes to a common schema
-
-3. **PostProcessing**  
-   - Assign globally unique landslide identifiers  
-   - Integrate seismic shaking metrics (ShakeMap)  
-   - Associate rainfall and other environmental parameters  
-   - Produce standardized GeoJSON / CSV outputs
-
-4. **(Optional) Vector Tile Generation**  
-   Convert processed GeoJSON into vector tiles for efficient web visualization.
+1. **Exploratory data analysis**: inspect raw inventories (formats, attributes, spatial coverage).
+2. **Preprocessing**: ingest raw datasets, normalize geometries and coordinate reference systems, and map source attributes to a common schema.
+3. **Postprocessing**: assign unique landslide identifiers, add seismic shaking metrics (ShakeMap) and rainfall, and produce standardized GeoJSON / CSV outputs.
+4. **Vector tiles (optional)**: convert processed GeoJSON into vector tiles for web visualization (`static_tiling/`).
 
 ---
 
-## Requirements
+## Running Locally
 
-### Core Python Packages
-
-- geopandas  
-- numpy  
-- pandas  
-- seaborn  
-- fiona  
-- contextily  
-
-Install with:
+Install the core Python packages to run the notebooks:
 
 ```bash
 pip install geopandas numpy pandas seaborn fiona contextily
 ```
 
-### Vector Tile Generation (optional)
+For vector tile generation, install [Tippecanoe](https://github.com/mapbox/tippecanoe) (`brew install tippecanoe` on macOS, or build it from source on Linux).
 
-**Tippecanoe**
+The book is built with [Jupyter Book](https://jupyterbook.org) (v1). To build it, from the repository root:
 
 ```bash
-# macOS (Homebrew)
-brew install tippecanoe
+pip install -r requirements.txt
+jupyter-book build .
+```
 
-# Ubuntu / Debian
-git clone https://github.com/mapbox/tippecanoe.git
-cd tippecanoe
-make -j
-sudo make install
+Then open `_build/html/index.html`.
+
+---
+
+## Project Structure
+
+```
+.
+├── processing_notebooks/
+│   ├── ExploratoryDataAnalysis/     # Initial exploration (not part of the book)
+│   ├── PreProcessing/               # Source-specific ingestion and cleaning
+│   ├── PostProcessing/              # Harmonization, IDs, hazard attribution
+│   └── postGIS/                     # Optional database workflows
+├── datasets_description/            # Supporting metadata and notes
+├── static_tiling/                   # Vector tile generation pipelines
+├── intro.md                         # Book landing page
+├── processing.md                    # Processing overview
+├── submission_instructions.md       # Contribution guide
+├── _toc.yml / _config.yml           # Jupyter Book configuration
+└── README.md
 ```
 
 ---
 
-## Contributing Data
+## Deployment
 
-If you would like to contribute a new landslide inventory:
+GitHub Actions builds the book on every push to `main` and publishes it to GitHub Pages.
 
-1. Follow the preprocessing examples in the **Jupyter Book**
-2. Produce a clean, standardized GeoJSON output
-3. Review the **Submission Instructions** page in the book
-4. Contact the CRESCENT Ground Failure team to coordinate inclusion
+---
+
+## Contributing
+
+1. Follow the preprocessing examples in the book.
+2. Produce a clean, standardized GeoJSON output.
+3. Review the [Submission Instructions](https://cascadiaquakes.github.io/cascadia-landslide-book/submission_instructions.html).
+4. Contact the team below to coordinate inclusion.
+
+---
+
+## License
+
+This project is licensed under the BSD 3-Clause License. See [LICENSE](LICENSE).
+
+---
+
+## Contacts
+
+- **Loïc Bachelot**, University of Oregon: [lbachelo@uoregon.edu](mailto:lbachelo@uoregon.edu)
+- **William Marfo**, University of California, Davis: [wmarfo@ucdavis.edu](mailto:wmarfo@ucdavis.edu)
+- **Amanda M. Thomas**, University of California, Davis: [amthom@ucdavis.edu](mailto:amthom@ucdavis.edu)
+
+For corrections or suggestions, please [open an issue](https://github.com/cascadiaquakes/cascadia-landslide-book/issues).
 
 ---
 
 ## Acknowledgments
 
-This work is developed as part of the **Cascadia Region Earthquake Science Center (CRESCENT)** and is supported by the **National Science Foundation**.  
-All original datasets remain the intellectual property of their respective agencies and authors.
+<table>
+  <tr>
+    <td align="center" valign="middle">
+      <img src="https://raw.githubusercontent.com/cascadiaquakes/.github/main/assets/crescent-circle.png" alt="CRESCENT Logo" width="150" />
+    </td>
+    <td align="center" valign="middle">
+      <img src="https://raw.githubusercontent.com/cascadiaquakes/.github/main/assets/nsf-logo.png" alt="NSF Logo" width="450" />
+    </td>
+  </tr>
+</table>
+
+This project is supported by the National Science Foundation through the Cascadia Region Earthquake Science Center (CRESCENT), Cooperative Agreement EAR-2225286.
