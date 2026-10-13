@@ -5,6 +5,7 @@
 Collection, harmonization and preparation of landslide and ground-failure inventories for the Cascadia region (California, Oregon, Washington and British Columbia). This repository underpins the CRESCENT Ground Failure Repository and viewer with reproducible data-processing workflows, and its Jupyter Book is the main reference for contributors.
 
 **Read the book:** https://cascadiaquakes.github.io/cascadia-landslide-book/
+
 **Viewer:** https://ground-failure.cascadiaquakes.org
 
 ---
